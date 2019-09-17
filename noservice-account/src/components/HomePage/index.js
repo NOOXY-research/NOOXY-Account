@@ -46,7 +46,7 @@ export function HomePage(props) {
   const classes = useStyles();
   return(
       <Grid container justify="center" alignItems="center" spacing={5}>
-        <Grid item xs={8}>
+        <Grid item xs={11}>
           <Avatar className={classes.avatar}>{props.user_meta.username?props.user_meta.username.slice(0, 3):null}</Avatar>
           <Typography  variant="h5" component="h2">
             {'Hello, '+ props.localize.welcome + ' ' + props.user_meta.firstname + ' ' + props.user_meta.lastname}
@@ -56,7 +56,7 @@ export function HomePage(props) {
             {"You can manage your personal infomation in this account page."}
           </Typography>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={11}>
           <Card className={classes.homeCard}>
             <CardContent>
               <Typography  variant="h5" component="h2">
