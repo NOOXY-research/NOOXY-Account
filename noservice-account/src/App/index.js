@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
+
 // Flux
 import Flux from '../flux'
 import Localizes from '../flux/data/localizes.json'
 
 import {HomePage} from '../components/HomePage';
+import {SigninPage, PasswordPage} from '../components/NoService';
 
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -18,7 +21,9 @@ import Typography from '@material-ui/core/Typography';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
+import Hidden from '@material-ui/core/Hidden';
 
+import Grid from '@material-ui/core/Grid';
 // card
 import {Card, CardContent, CardActions} from '@material-ui/core/';
 
@@ -26,7 +31,7 @@ import {Card, CardContent, CardActions} from '@material-ui/core/';
 import blue from '@material-ui/core/colors/blue';
 
 // list
-import {List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core/';
+import {List, ListItem, ListItemIcon, ListItemText, ListItemAvatar} from '@material-ui/core/';
 
 // icons
 import MenuIcon from '@material-ui/icons/Menu';
@@ -35,22 +40,37 @@ import CodeIcon from '@material-ui/icons/Code';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+const CONSTANTS = require('../flux/constants.json');
+const ROOT_PATH = CONSTANTS.settings.root_path;
 
 
 const styles = theme=> ({
   root: {
-    flexGrow: 1,
+    display: 'flex',
+    minHeight: '100%',
+    minWidth: '100%'
   },
   headerBar: {
     backgroundColor: "white",
     boxShadow: "none"
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: 250,
+      flexShrink: 0,
+    },
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
   },
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
   },
   title: {
-    display: 'block'
+    display: 'block',
+    color: 'black'
   },
 
   drawerList: {
@@ -72,6 +92,7 @@ const styles = theme=> ({
     [theme.breakpoints.down('sm')]: {
      columnCount: 1,
    },
+   toolbar: theme.mixins.toolbar,
   }
 })
 
@@ -94,16 +115,29 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.controller = new Flux(this.setState.bind(this));
+    this.actions = this.controller.Actions;
     this.state= {
       lang: 'en',
       localizes: Localizes,
-      DrawerOpened: false
+      DrawerOpened: false,
+      UserMeta: {}
     }
   }
 
   componentDidMount() {
-    this.controller.start(()=> {
-      console.log('background started.');
+    this.controller.NoService.getImplementationModule((err, NSimplementation)=>{
+      this.actions.log('NoService', 'Connecting to NOOXY service.');
+      NSimplementation.setImplement('signin', (connprofile, data, data_sender)=>{
+        this.actions.log('NoService Auth', 'NOOXY service signin emitted.');
+        this.history.push('/noservice/signin');
+      });
+      NSimplementation.setImplement('AuthbyPassword', (connprofile, data, data_sender) => {
+        this.actions.log('NoService Auth', 'NOOXY service Authby Password emitted.');
+        this.history.push('/noservice/password?authtoken='+data.d.t);
+      });
+      this.controller.start(()=> {
+        console.log('background started.');
+      });
     });
   }
 
@@ -120,8 +154,8 @@ class App extends Component {
           <ListItemText primary={'NoService '+this.state.localizes[this.state.lang].account}/>
         </ListItem>
         <ListItem button>
-          <Avatar>M</Avatar>
-          <ListItemText primary={"Mr. Robot"} />
+          <ListItemAvatar><Avatar>M</Avatar></ListItemAvatar>
+          <ListItemText primary={this.state.UserMeta.username} />
         </ListItem>
         <Divider />
         <ListItem button>
@@ -132,7 +166,9 @@ class App extends Component {
           <ListItemIcon><AccountIcon/></ListItemIcon>
           <ListItemText primary={this.state.localizes[this.state.lang].edit_my_account} />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={()=> {
+          this.actions.logout();
+        }}>
           <ListItemIcon><ExitToAppIcon/></ListItemIcon>
           <ListItemText primary={this.state.localizes[this.state.lang].sign_out} />
         </ListItem>
@@ -147,28 +183,87 @@ class App extends Component {
     )
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <AppBar className={classes.headerBar} position="static">
-            <Toolbar>
-              <IconButton className={classes.menuButton} aria-label="Open drawer" onClick={this.toggleDrawer(true)}>
-                <MenuIcon />
-              </IconButton>
-              <Typography className={classes.title} variant="h6" component="h1" noWrap>
-                {'NoService '+this.state.localizes[this.state.lang].account}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <SwipeableDrawer
-           open={this.state.DrawerOpened}
-           onClose={this.toggleDrawer(false)}
-           onOpen={this.toggleDrawer(true)}
-          >
-             {sideList}
-          </SwipeableDrawer>
-          <HomePage classes={classes} langs={this.state.localizes[this.state.lang]}/>
-        </div>
-      </MuiThemeProvider>
+      <Router basename={ROOT_PATH}>
+        <MuiThemeProvider theme={theme}>
+        <Route exact path={':url(.*)'} render={(props)=>{
+          this.history = props.history;
+          return(
+            <div className={classes.root}>
+              <Switch>
+                <Route exact path='/noservice/signin' render={(props)=>{
+                  return(
+                    <Grid container justify="center" alignItems="center">
+                    <Grid item xs={8}>
+                      <Card className={classes.homeCard}>
+                        <SigninPage SignupURL={""} NSc={this.controller.NoService} onFinish={()=>{window.location.replace(ROOT_PATH);}}/>
+                      </Card>
+                    </Grid>
+                    </Grid>
+                  );
+                }}/>
+                <Route exact path='/noservice/password' render={(props)=>{
+                  return(
+                    <PasswordPage NSc={this.controller.NoService} onFinish={props.history.goBack}/>
+                  );
+                }}/>
+                <Route exact path={':url(.*)'} render={(props)=>{
+                  return(
+                    [
+                      <AppBar className={classes.headerBar} position="fixed">
+                        <Toolbar>
+                          <IconButton className={classes.menuButton} aria-label="Open drawer" onClick={this.toggleDrawer(true)}>
+                            <MenuIcon />
+                          </IconButton>
+                          <Typography className={classes.title} variant="h6" component="h1" noWrap>
+                            {'NoService '+this.state.localizes[this.state.lang].account}
+                          </Typography>
+                        </Toolbar>
+                      </AppBar>
+                      ,
+                      <nav className={classes.drawer} aria-label="mailbox folders">
+                        <Hidden smUp implementation="css">
+                          <SwipeableDrawer
+                           open={this.state.DrawerOpened}
+                           onClose={this.toggleDrawer(false)}
+                           onOpen={this.toggleDrawer(true)}
+                           variant="temporary"
+                          >
+                             {sideList}
+                          </SwipeableDrawer>
+                        </Hidden>
+                        <Hidden xsDown implementation="css">
+                          <SwipeableDrawer
+                            variant="permanent"
+                            open
+                          >
+                             {sideList}
+                          </SwipeableDrawer>
+                        </Hidden>
+                      </nav>
+                      ,
+                      <main className={classes.content}>
+                        <div style= {{minHeight: '40px'}}/>
+                        <Switch>
+                          <Route exact path="/" render={() => {
+                            return(<Redirect to="/home/"/>)
+                          }}/>
+                          <Route exact path="/home/" render={(props)=>{
+                            return(
+                              <HomePage user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
+                            );
+                          }}/>
+                        </Switch>
+                      </main>
+                    ]
+                  );
+                }}/>
+              </Switch>
+            </div>
+          );
+        }}/>
+
+        </MuiThemeProvider>
+      </Router>
     );
   }
 }

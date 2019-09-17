@@ -6,7 +6,17 @@
     "home": "home",
     "sign_out": "sign out",
     "about_you": "about you",
-    "edit": "edit"
+    "edit": "edit",
+    "welcome": "welcome",
+    "username": "username",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "userid": "userID",
+    "quick_access": "quick access",
+    "userid": "userID",
+    "quick_access": "quick access",
+    "phone_number": "phone number",
+    "email": "email address"
   },
   "zh": {
     "account": "帳號",

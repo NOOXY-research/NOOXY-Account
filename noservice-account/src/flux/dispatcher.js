@@ -16,6 +16,9 @@ function generateDispatcher(setState) {
       setState( { localizes: payload.data } );
     }
 
+    else if(payload.type === 'updateUserMeta') {
+      setState( { UserMeta: payload.data } );
+    }
   });
 
   return _dispatcher;

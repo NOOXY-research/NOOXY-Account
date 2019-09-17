@@ -7,13 +7,17 @@ import Localizes from './data/localizes.json';
 
 function Service(NoService, Dispatcher) {
   let Services = {
-    NoTalk: null,
-    gotoandPlay: null
+    NoUser: null
   };
 
   let setupOnline = ()=> {
     try {
-      NoService.createActivitySocket('NoUser', (err, NoTalk)=> {
+      NoService.createActivitySocket('NoUser', (err, NoUser)=> {
+        Services.NoUser = NoUser;
+        NoUser.call('returnUserMeta', null, (err, meta)=> {
+          this.Actions.updateUserMeta(meta);
+          console.log(JSON.stringify(meta));
+        });
       });
     }
     catch (e) {
@@ -26,9 +30,15 @@ function Service(NoService, Dispatcher) {
     updateLang: (lang)=> {
       Dispatcher.dispatch({type: 'updateLang', data: lang});
     },
-
     updateLocalizes: (data)=> {
       Dispatcher.dispatch({type: 'updateLocalizes', data: data});
+    },
+    updateUserMeta: (data)=> {
+      Dispatcher.dispatch({type: 'updateUserMeta', data: data});
+    },
+    log: (data)=> {console.log(data)},
+    logout: ()=> {
+      NoService.logout();
     }
   };
 

@@ -9,6 +9,7 @@
       "host": "nooxy.org",
       "conn": "WebSocketSecure"
     },
+    "root_path": "/",
     "ga": "UA-125861662-1"
   }
 }
