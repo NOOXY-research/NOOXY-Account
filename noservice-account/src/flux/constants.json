@@ -1,0 +1,14 @@
+{
+  "version": "0.0.0",
+  "authors": [
+    "noowyee"
+  ],
+  "settings": {
+    "default_lang": "en",
+    "noservice": {
+      "host": "nooxy.org",
+      "conn": "WebSocketSecure"
+    },
+    "ga": "UA-125861662-1"
+  }
+}

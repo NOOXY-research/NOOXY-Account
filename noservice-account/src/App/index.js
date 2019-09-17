@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import {classNames} from 'classnames';
 
-import {HomePage} from './home';
+// Flux
+import Flux from '../flux'
+import Localizes from '../flux/data/localizes.json'
+
+import {HomePage} from '../components/HomePage';
+import NSClient from '../components/NoService/NSc.js';
 
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -90,10 +94,19 @@ const theme = createMuiTheme({
 class App extends Component {
   constructor(props) {
     super(props);
+    this.controller = new Flux(this.setState.bind(this));
+    this.controller.importNoServiceClientModule(NSClient);
     this.state= {
-      langs: require('./langs.json')['zh'],
+      lang: 'en',
+      localizes: Localizes,
       DrawerOpened: false
     }
+  }
+
+  componentDidMount() {
+    this.controller.start(()=> {
+      console.log('background started.');
+    });
   }
 
   toggleDrawer = (bool)=> ()=> {
@@ -106,7 +119,7 @@ class App extends Component {
     const sideList = (
       <div className={classes.drawerList}>
         <ListItem button>
-          <ListItemText primary={'NoService '+this.state.langs.account}/>
+          <ListItemText primary={'NoService '+this.state.localizes[this.state.lang].account}/>
         </ListItem>
         <ListItem button>
           <Avatar>M</Avatar>
@@ -115,21 +128,21 @@ class App extends Component {
         <Divider />
         <ListItem button>
           <ListItemIcon><HomeIcon/></ListItemIcon>
-          <ListItemText primary={this.state.langs.home} />
+          <ListItemText primary={this.state.localizes[this.state.lang].home} />
         </ListItem>
         <ListItem button>
           <ListItemIcon><AccountIcon/></ListItemIcon>
-          <ListItemText primary={this.state.langs.edit_my_account} />
+          <ListItemText primary={this.state.localizes[this.state.lang].edit_my_account} />
         </ListItem>
         <ListItem button>
           <ListItemIcon><ExitToAppIcon/></ListItemIcon>
-          <ListItemText primary={this.state.langs.sign_out} />
+          <ListItemText primary={this.state.localizes[this.state.lang].sign_out} />
         </ListItem>
         <Divider />
         <List>
           <ListItem button>
             <ListItemIcon><CodeIcon/></ListItemIcon>
-            <ListItemText primary={this.state.langs.noshell} />
+            <ListItemText primary={this.state.localizes[this.state.lang].noshell} />
           </ListItem>
         </List>
       </div>
@@ -144,7 +157,7 @@ class App extends Component {
                 <MenuIcon />
               </IconButton>
               <Typography className={classes.title} variant="h6" component="h1" noWrap>
-                {'NoService '+this.state.langs.account}
+                {'NoService '+this.state.localizes[this.state.lang].account}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -155,7 +168,7 @@ class App extends Component {
           >
              {sideList}
           </SwipeableDrawer>
-          <HomePage classes={classes} langs={this.state.langs}/>
+          <HomePage classes={classes} langs={this.state.localizes[this.state.lang]}/>
         </div>
       </MuiThemeProvider>
     );
