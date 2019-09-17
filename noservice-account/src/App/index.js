@@ -171,7 +171,7 @@ class App extends Component {
           this.actions.logout();
         }}>
           <ListItemIcon><ExitToAppIcon/></ListItemIcon>
-          <ListItemText primary={this.state.localizes[this.state.lang].sign_out} />
+          <ListItemText primary={this.state.localizes[this.state.lang].logout} />
         </ListItem>
         <Divider />
         <List>

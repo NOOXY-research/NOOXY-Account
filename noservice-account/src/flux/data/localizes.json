@@ -4,7 +4,7 @@
     "edit_my_account": "edit account",
     "noshell": "NoShell",
     "home": "home",
-    "sign_out": "sign out",
+    "logout": "logout",
     "about_you": "about you",
     "edit": "edit",
     "welcome": "welcome",
@@ -23,7 +23,7 @@
     "edit_my_account": "修改我的帳號",
     "noshell": "服務終端機",
     "home": "主頁",
-    "sign_out": "登出帳號",
+    "logout": "登出帳號",
     "about_you": "關於您",
     "edit": "編輯"
 
