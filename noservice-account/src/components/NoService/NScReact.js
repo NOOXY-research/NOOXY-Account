@@ -4,7 +4,6 @@
 // Copyright 2018 NOOXY. All Rights Reserved.
 
 import React, { Component } from 'react';
-import Ink from 'react-ink';
 import './NScReact.css';
 
 const getQueryVariable = (variable)=>
@@ -37,7 +36,7 @@ export class SigninPage extends Component {
 
     this.Signin = ()=>{
       try{
-        this.props.NSc.getImplement((err, implement_module)=>{
+        this.props.NSc.getImplementationModule((err, implement_module)=>{
           implement_module.getDefaultClientConnProfile((err, connprofile) => {
             let _data = {
               u: this.state.username,
@@ -47,14 +46,13 @@ export class SigninPage extends Component {
             implement_module.setImplement('onToken', (err, token)=>{
               if(token) {
                 setCookie('NSToken', token, 7);
-                window.location.replace('/');
-                setTimeout(()=>{window.location.reload();}, 500);
+                setTimeout(this.props.onFinish, 500);
               }
               else {
                 this.setState({status:'Wrong username or password!'});
               }
             });
-            implement_module.emitRouter(connprofile, 'GT', _data);
+            implement_module.emitRequest(connprofile, 'GT', _data);
 
           });
         });
@@ -84,26 +82,25 @@ export class SigninPage extends Component {
 
   render() {
     return(
-      <div className="Page">
-        <div className="Page-Block">
-          <div className="Page-Row">
-          <Ink/>
-            <div className="Page-Row-Text">
+      <div className="NoService-Page">
+        <div className="NoService-Page-Block">
+          <div className="NoService-Page-Row">
+            <div className="NoService-Page-Row-Text">
               <h1>{"Signing in"}</h1>
               <p> {this.state.status}</p>
             </div>
           </div>
         </div>
 
-        <div className="Page-Block">
-          <div className="Page-Row">
-            <div className="Page-Row-Text">
+        <div className="NoService-Page-Block">
+          <div className="NoService-Page-Row">
+            <div className="NoService-Page-Row-Text">
               <h2>{"Username"}</h2>
               <input ref={(input) => { this.username = input; }}  onChange={evt => this.updateUsernameInputValue(evt)} placeholder="Enter your NOOXY username" className="ChPage-Sender-Input"></input>
             </div>
           </div>
-          <div className="Page-Row">
-            <div className="Page-Row-Text">
+          <div className="NoService-Page-Row">
+            <div className="NoService-Page-Row-Text">
               <h2>{"Password"}</h2>
               <input type="password" onKeyPress={(event)=> {
                 if(event.key == 'Enter'){
@@ -114,18 +111,17 @@ export class SigninPage extends Component {
           </div>
         </div>
 
-        <div className="Page-Block">
-          <div className="Page-Row"  onClick={this.Signin}>
-          <Ink/>
-            <div className="Page-Row-Text">
+        <div className="NoService-Page-Block">
+          <div className="NoService-Page-Row"  onClick={this.Signin}>
+
+            <div className="NoService-Page-Row-Text">
               <h2>{"Done"}</h2>
               <p> {"sign me in"}</p>
             </div>
           </div>
-          <a href={this.props.SignupURL}>
-            <div className="Page-Row">
-            <Ink/>
-              <div className="Page-Row-Text">
+          <a href={this.props.SignupURL} target="_blank">
+            <div className="NoService-Page-Row">
+              <div className="NoService-Page-Row-Text">
                 <h2>{"Siginup"}</h2>
                 <p> {"Signup a NoService account"}</p>
               </div>
@@ -144,7 +140,7 @@ export class PasswordPage extends Component {
       password: null
     }
     this.Signin = ()=> {
-      this.props.NSc.getImplement((err, implement_module)=>{
+      this.props.NSc.getImplementationModule((err, implement_module)=>{
       implement_module.getDefaultClientConnProfile((err, connprofile) => {
         let _data = {
           m: 'PW',
@@ -172,26 +168,25 @@ export class PasswordPage extends Component {
 
   render() {
     return(
-      <div className="Page">
-        <div className="Page-Block">
-          <div className="Page-Row">
-          <Ink/>
-            <div className="Page-Row-Text">
+      <div className="NoService-Page">
+        <div className="NoService-Page-Block">
+          <div className="NoService-Page-Row">
+            <div className="NoService-Page-Row-Text">
               <h1>{"Enter your Password"}</h1>
               <p> {"In order to access this service. You must enter your password of your account."}</p>
             </div>
           </div>
         </div>
 
-        <div className="Page-Block">
-          <div className="Page-Row">
-            <div className="Page-Row-Text">
+        <div className="NoService-Page-Block">
+          <div className="NoService-Page-Row">
+            <div className="NoService-Page-Row-Text">
               <h2>{"Username"}</h2>
               <p>{this.props.NSc.returnUserName()?this.props.NSc.returnUserName():'null'}</p>
             </div>
           </div>
-          <div className="Page-Row">
-            <div className="Page-Row-Text">
+          <div className="NoService-Page-Row">
+            <div className="NoService-Page-Row-Text">
               <h2>{"Password"}</h2>
               <input ref={(input) => { this.password = input; }} onKeyPress={(event)=> {
                 if(event.key == 'Enter'){
@@ -202,10 +197,9 @@ export class PasswordPage extends Component {
           </div>
         </div>
 
-        <div className="Page-Block">
-          <div className="Page-Row"  onClick={this.Signin}>
-          <Ink/>
-            <div className="Page-Row-Text">
+        <div className="NoService-Page-Block">
+          <div className="NoService-Page-Row"  onClick={this.Signin}>
+            <div className="NoService-Page-Row-Text">
               <h2>{"Done"}</h2>
               <p> {"This is my password."}</p>
             </div>

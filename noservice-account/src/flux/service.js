@@ -13,10 +13,11 @@ function Service(NoService, Dispatcher) {
 
   let setupOnline = ()=> {
     try {
-      // NoService.createActivitySocket('NoUser', (err, NoTalk)=> {
-      // });
+      NoService.createActivitySocket('NoUser', (err, NoTalk)=> {
+      });
     }
     catch (e) {
+      console.log(e);
       setTimeout(setupOnline, 15*1000);
     }
   };

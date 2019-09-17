@@ -6,7 +6,6 @@ import Flux from '../flux'
 import Localizes from '../flux/data/localizes.json'
 
 import {HomePage} from '../components/HomePage';
-import NSClient from '../components/NoService/NSc.js';
 
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -95,7 +94,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.controller = new Flux(this.setState.bind(this));
-    this.controller.importNoServiceClientModule(NSClient);
     this.state= {
       lang: 'en',
       localizes: Localizes,
