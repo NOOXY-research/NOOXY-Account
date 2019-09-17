@@ -8,7 +8,8 @@ import Flux from '../flux'
 import Localizes from '../flux/data/localizes.json'
 
 import {HomePage} from '../components/HomePage';
-import {SigninPage, PasswordPage} from '../components/NoService';
+import {SignInPage, PasswordPage} from '../components/AuthPages';
+
 
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -192,13 +193,7 @@ class App extends Component {
               <Switch>
                 <Route exact path='/noservice/signin' render={(props)=>{
                   return(
-                    <Grid container justify="center" alignItems="center">
-                    <Grid item xs={8}>
-                      <Card className={classes.homeCard}>
-                        <SigninPage SignupURL={""} NSc={this.controller.NoService} onFinish={()=>{window.location.replace(ROOT_PATH);}}/>
-                      </Card>
-                    </Grid>
-                    </Grid>
+                    <SignInPage SignupURL={""} NSc={this.controller.NoService} onFinish={()=>{window.location.replace(ROOT_PATH);}}/>
                   );
                 }}/>
                 <Route exact path='/noservice/password' render={(props)=>{
