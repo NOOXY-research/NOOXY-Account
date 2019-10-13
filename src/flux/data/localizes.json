@@ -16,7 +16,10 @@
     "userid": "userID",
     "quick_access": "quick access",
     "phone_number": "phone number",
-    "email": "email address"
+    "email": "email address",
+    "personal_settings": "personal",
+    "contact_settings": "contact method",
+    "security_settings": "security and privacy"
   },
   "zh": {
     "account": "帳號",

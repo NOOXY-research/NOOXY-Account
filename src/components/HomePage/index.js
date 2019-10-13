@@ -14,6 +14,8 @@ import Divider from '@material-ui/core/Divider';
 
 import PersonIcon from '@material-ui/icons/Person';
 import CodeIcon from '@material-ui/icons/Code';
+import LocalPhoneIcon from '@material-ui/icons/LocalPhone';
+
 
 const useStyles = makeStyles({
   avatar: {
@@ -47,9 +49,8 @@ export function HomePage(props) {
   return(
       <Grid container justify="center" alignItems="center" spacing={5}>
         <Grid item xs={11}>
-          <Avatar className={classes.avatar}>{props.user_meta.username?props.user_meta.username.slice(0, 3):null}</Avatar>
-          <Typography  variant="h5" component="h2">
-            {'Hello, '+ props.localize.welcome + ' ' + props.user_meta.firstname + ' ' + props.user_meta.lastname}
+          <Typography  variant="h3" component="h2">
+            {'Hello, '+ props.user_meta.firstname + ' ' + props.user_meta.lastname}
           </Typography>
 
           <Typography  variant="p" component="p">
@@ -87,7 +88,7 @@ export function HomePage(props) {
                 <Divider component="li" />
                 <ListItem>
                   <ListItemIcon>
-                    <PersonIcon />
+                    <LocalPhoneIcon />
                   </ListItemIcon>
                   <ListItemText primary={'Contact method'} secondary={'how do people keep in touch with you?'}/>
                   <Button  color="primary">Edit</Button>

@@ -8,8 +8,10 @@ import Flux from '../flux'
 import Localizes from '../flux/data/localizes.json'
 
 import {HomePage} from '../components/HomePage';
+import ContactPage from '../components/ContactPage';
+import PersonalPage from '../components/PersonalPage';
+import SecurityPage from '../components/SecurityPage';
 import {SignInPage, PasswordPage} from '../components/AuthPages';
-
 
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -40,6 +42,9 @@ import AccountIcon from '@material-ui/icons/AccountCircle';
 import CodeIcon from '@material-ui/icons/Code';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LocalPhoneIcon from '@material-ui/icons/LocalPhone';
+import LockIcon from '@material-ui/icons/Lock';
+
 
 const CONSTANTS = require('../flux/constants.json');
 const ROOT_PATH = CONSTANTS.settings.root_path;
@@ -152,21 +157,37 @@ class App extends Component {
     const sideList = (
       <div className={classes.drawerList}>
         <ListItem button>
-          <ListItemText primary={'NoService '+this.state.localizes[this.state.lang].account}/>
+          <ListItemText secondary={'NoService '+this.state.localizes[this.state.lang].account}/>
         </ListItem>
         <ListItem button>
           <ListItemAvatar><Avatar>M</Avatar></ListItemAvatar>
-          <ListItemText primary={this.state.UserMeta.username} />
+          <ListItemText primary={this.state.UserMeta.firstname} secondary={this.state.UserMeta.username} />
         </ListItem>
         <Divider />
-        <ListItem button>
-          <ListItemIcon><HomeIcon/></ListItemIcon>
-          <ListItemText primary={this.state.localizes[this.state.lang].home} />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon><AccountIcon/></ListItemIcon>
-          <ListItemText primary={this.state.localizes[this.state.lang].edit_my_account} />
-        </ListItem>
+        <Link to="/home/">
+          <ListItem button>
+            <ListItemIcon><HomeIcon/></ListItemIcon>
+            <ListItemText primary={this.state.localizes[this.state.lang].home} />
+          </ListItem>
+        </Link>
+        <Link to="/personal-settings/">
+          <ListItem button>
+            <ListItemIcon><AccountIcon/></ListItemIcon>
+            <ListItemText primary={this.state.localizes[this.state.lang].personal_settings} />
+          </ListItem>
+        </Link>
+        <Link to="/contact-settings/">
+          <ListItem button>
+            <ListItemIcon><LocalPhoneIcon/></ListItemIcon>
+            <ListItemText primary={this.state.localizes[this.state.lang].contact_settings} />
+          </ListItem>
+        </Link>
+        <Link to="/security-settings/">
+          <ListItem button>
+            <ListItemIcon><LockIcon/></ListItemIcon>
+            <ListItemText primary={this.state.localizes[this.state.lang].security_settings} />
+          </ListItem>
+        </Link>
         <ListItem button onClick={()=> {
           this.actions.logout();
         }}>
@@ -245,6 +266,21 @@ class App extends Component {
                           <Route exact path="/home/" render={(props)=>{
                             return(
                               <HomePage user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
+                            );
+                          }}/>
+                          <Route exact path="/personal-settings/" render={(props)=>{
+                            return(
+                              <PersonalPage user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
+                            );
+                          }}/>
+                          <Route exact path="/contact-settings/" render={(props)=>{
+                            return(
+                              <ContactPage user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
+                            );
+                          }}/>
+                          <Route exact path="/security-settings/" render={(props)=>{
+                            return(
+                              <SecurityPage user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
                             );
                           }}/>
                         </Switch>

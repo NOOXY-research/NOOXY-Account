@@ -1436,7 +1436,7 @@ function NSc(targetip, method, targetport) {
   function Implementation() {
 
     let _implts = {
-      // NOOXY service protocol sercure end
+      // NOOXY service protocol secure end
       // return for Server
       AuthbyToken: () => {
         Utils.TagLog('*ERR*', 'AuthbyToken not implemented');
