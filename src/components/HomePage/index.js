@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from "react-router-dom";
+
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -49,12 +51,11 @@ export function HomePage(props) {
   return(
       <Grid container justify="center" alignItems="center" spacing={5}>
         <Grid item xs={11}>
-          <Typography  variant="h3" component="h2">
+          <Typography  variant="h4" component="h2">
             {'Hello, '+ props.user_meta.firstname + ' ' + props.user_meta.lastname}
           </Typography>
-
           <Typography  variant="p" component="p">
-            {"You can manage your personal infomation in this account page."}
+            {"Welcome to NoService Account. You can manage your personal infomation in this account page."}
           </Typography>
         </Grid>
         <Grid item xs={11}>
@@ -69,7 +70,7 @@ export function HomePage(props) {
                     <PersonIcon />
                   </ListItemIcon>
                   <ListItemText primary={'Identity'} secondary={'your identities are displayed below.'}/>
-                  <Button  color="primary">Edit</Button>
+                  <Link to="/personal-settings"><Button  color="primary">Edit</Button></Link>
                 </ListItem>
                 <Divider component="li" />
                 <ListItem>

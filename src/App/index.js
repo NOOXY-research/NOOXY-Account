@@ -159,10 +159,12 @@ class App extends Component {
         <ListItem button>
           <ListItemText secondary={'NoService '+this.state.localizes[this.state.lang].account}/>
         </ListItem>
-        <ListItem button>
-          <ListItemAvatar><Avatar>M</Avatar></ListItemAvatar>
-          <ListItemText primary={this.state.UserMeta.firstname} secondary={this.state.UserMeta.username} />
-        </ListItem>
+        <Link to="/home/">
+          <ListItem button>
+            <ListItemAvatar><Avatar>M</Avatar></ListItemAvatar>
+            <ListItemText primary={this.state.UserMeta.firstname} secondary={this.state.UserMeta.username} />
+          </ListItem>
+        </Link>
         <Divider />
         <Link to="/home/">
           <ListItem button>
@@ -230,9 +232,6 @@ class App extends Component {
                           <IconButton className={classes.menuButton} aria-label="Open drawer" onClick={this.toggleDrawer(true)}>
                             <MenuIcon />
                           </IconButton>
-                          <Typography className={classes.title} variant="h6" component="h1" noWrap>
-                            {'NoService '+this.state.localizes[this.state.lang].account}
-                          </Typography>
                         </Toolbar>
                       </AppBar>
                       ,

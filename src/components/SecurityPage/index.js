@@ -47,7 +47,7 @@ export default function Page(props) {
   return(
     <Grid container justify="center" alignItems="center" spacing={5}>
       <Grid item xs={11}>
-        <Typography  variant="h3" component="h1">
+        <Typography  variant="h4" component="h1">
           {capitalize(props.localize.security_settings)}
         </Typography>
 
