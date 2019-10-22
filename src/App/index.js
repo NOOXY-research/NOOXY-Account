@@ -3,6 +3,9 @@ import './App.css';
 
 import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
 
+// Css
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 // Flux
 import Flux from '../flux'
 import Localizes from '../flux/data/localizes.json'
@@ -44,6 +47,11 @@ import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LocalPhoneIcon from '@material-ui/icons/LocalPhone';
 import LockIcon from '@material-ui/icons/Lock';
+import InvertColorsIcon from '@material-ui/icons/InvertColors';
+
+
+//
+import MuiSwitch from '@material-ui/core/Switch';
 
 
 const CONSTANTS = require('../flux/constants.json');
@@ -57,7 +65,7 @@ const styles = theme=> ({
     minWidth: '100%'
   },
   headerBar: {
-    backgroundColor: "white",
+    backgroundColor: "rgba(0, 0, 0, 0)",
     boxShadow: "none"
   },
   drawer: {
@@ -117,6 +125,22 @@ const theme = createMuiTheme({
 
 });
 
+const dark_theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: { main: blue[500] }, // Purple and green play nicely together.
+    secondary: { main: '#11cb5f' }, // This is just green.A700 as hex.
+  },
+
+  typography: { useNextVariants: true },
+
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  }
+
+});
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -126,7 +150,8 @@ class App extends Component {
       lang: 'en',
       localizes: Localizes,
       DrawerOpened: false,
-      UserMeta: {}
+      UserMeta: {},
+      DarkTheme: false
     }
   }
 
@@ -197,6 +222,14 @@ class App extends Component {
           <ListItemText primary={this.state.localizes[this.state.lang].logout} />
         </ListItem>
         <Divider />
+        <ListItem button onClick={()=> {
+          this.actions.updateDarktheme(!this.state.DarkTheme);
+        }}>
+          <ListItemIcon><InvertColorsIcon/></ListItemIcon>
+          <ListItemText primary={this.state.localizes[this.state.lang].dark_theme} />
+          <MuiSwitch color="primary" checked={this.state.DarkTheme} />
+        </ListItem>
+        <Divider />
         <List>
           <ListItem button>
             <ListItemIcon><CodeIcon/></ListItemIcon>
@@ -208,7 +241,8 @@ class App extends Component {
 
     return (
       <Router basename={ROOT_PATH}>
-        <MuiThemeProvider theme={theme}>
+        <MuiThemeProvider theme={this.state.DarkTheme?dark_theme:theme}>
+        <CssBaseline />
         <Route exact path={':url(.*)'} render={(props)=>{
           this.history = props.history;
           return(
@@ -227,13 +261,15 @@ class App extends Component {
                 <Route exact path={':url(.*)'} render={(props)=>{
                   return(
                     [
-                      <AppBar className={classes.headerBar} position="fixed">
-                        <Toolbar>
-                          <IconButton className={classes.menuButton} aria-label="Open drawer" onClick={this.toggleDrawer(true)}>
-                            <MenuIcon />
-                          </IconButton>
-                        </Toolbar>
-                      </AppBar>
+                      <Hidden smUp implementation="css">
+                        <AppBar className={classes.headerBar} position="fixed">
+                          <Toolbar>
+                            <IconButton className={classes.menuButton} aria-label="Open drawer" onClick={this.toggleDrawer(true)}>
+                              <MenuIcon />
+                            </IconButton>
+                          </Toolbar>
+                        </AppBar>
+                      </Hidden>
                       ,
                       <nav className={classes.drawer} aria-label="mailbox folders">
                         <Hidden smUp implementation="css">

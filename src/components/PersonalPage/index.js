@@ -22,6 +22,17 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 //
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+
+//
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
+//
 import CodeIcon from '@material-ui/icons/Code';
 
 
@@ -61,141 +72,199 @@ export default function Page(props) {
   const classes = useStyles();
   const [OpenedDialog, setOpenedDialog] = React.useState(null);
   return(
-    <Grid container justify="center" alignItems="center" spacing={5}>
-      <Grid item xs={11}>
-        <Typography  variant="h4" component="h1">
-          {capitalize(props.localize.personal_settings)}
-        </Typography>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Grid container justify="center" alignItems="center" spacing={5}>
+        <Grid item xs={11}>
+          <Typography  variant="h4" component="h1">
+            {capitalize(props.localize.personal_settings)}
+          </Typography>
 
-        <Typography  variant="p" component="p">
-          {"You can manage your personal infomation in this page."}
-        </Typography>
+          <Typography  variant="p" component="p">
+            {"You can manage your personal infomation in this page."}
+          </Typography>
+        </Grid>
+        <Grid item xs={11}>
+          <Card className={classes.homeCard}>
+            <CardContent>
+              <Typography  variant="h5" component="h2">
+                {capitalize('Personal information')}
+              </Typography>
+              <List className={classes.root}>
+                <ListItem button>
+                  <ListItemAvatar>
+                    <Avatar>
+                      M
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={'Profile photo'} secondary={'Description.'}/>
+                </ListItem>
+                <Divider component="li" />
+
+                <ListItem button onClick={()=>{
+                  setOpenedDialog('displayname');
+                }} >
+                  <ListItemText primary={'Display Name'} secondary={props.user_meta.displayname}/>
+                </ListItem>
+                <Dialog open={OpenedDialog==='displayname'} onClose={()=>{setOpenedDialog(null);}} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Display name</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Your display name will be the primary name that be displayed on our services.
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      id="name"
+                      label="Display name"
+                      type="text"
+                      fullWidth
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Divider component="li" />
+
+                <ListItem button onClick={()=>{
+                  setOpenedDialog('name');
+                }}>
+                  <ListItemText primary={'Name'} secondary={props.user_meta.firstname+ ' '+ props.user_meta.lastname}/>
+                </ListItem>
+                <Dialog open={OpenedDialog==='name'} onClose={()=>{setOpenedDialog(null);}} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Name</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Your display name will be the primary name that be displayed on our services.
+                    </DialogContentText>
+                    <TextField
+                      className={classes.textField}
+                      autoFocus
+                      defaultValue={props.user_meta.firstname}
+                      id="firstname"
+                      label="First name"
+                      type="text"
+                      margin="normal"
+                    />
+
+                    <TextField
+                      className={classes.textField}
+                      defaultValue={props.user_meta.lastname}
+                      id="lastname"
+                      label="Last name"
+                      margin="normal"
+                      type="text"
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Divider component="li" />
+
+                <ListItem button onClick={()=>{
+                  setOpenedDialog('gender');
+                }}>
+                  <ListItemText primary={'Gender'} secondary={props.user_meta.gender}/>
+                </ListItem>
+                <Dialog open={OpenedDialog==='gender'} onClose={()=>{setOpenedDialog(null);}} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Gender</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                    {props.localize.gender_description}
+                    </DialogContentText>
+                    <Select value={'M'} onChange={evt => {
+                    }}>
+                      <MenuItem key={0} value={'M'}>{"male"}</MenuItem>
+                      <MenuItem key={1} value={'F'}>{"female"}</MenuItem>
+                    </Select>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+
+                <Divider component="li" />
+                <ListItem button  onClick={()=>{
+                  setOpenedDialog('birthday');
+                }}>
+                  <ListItemText primary={'Birthday'} secondary={props.user_meta.birthday}/>
+                </ListItem>
+                <Dialog open={OpenedDialog==='birthday'} onClose={()=>{setOpenedDialog(null);}} aria-labelledby="form-dialog-title">
+                  <DialogTitle id="form-dialog-title">Gender</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                    {props.localize.gender_description}
+                    </DialogContentText>
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Date picker inline"
+                      value={props.user_meta.birthday}
+                      onChange
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+
+              </List>
+            </CardContent>
+            <CardActions>
+
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid item xs={11}>
+          <Card className={classes.homeCard}>
+            <CardContent>
+              <Typography  variant="h5" component="h2">
+                {capitalize('Region')}
+              </Typography>
+              <List className={classes.root}>
+                <ListItem>
+                  <ListItemText primary={'Language'} secondary={props.user_meta.language}/>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem>
+                  <ListItemText primary={'Country'} secondary={props.user_meta.country}/>
+                </ListItem>
+                <Divider component="li" />
+                <ListItem>
+                  <ListItemText primary={'Address'} secondary={props.user_meta.address}/>
+                </ListItem>
+              </List>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid item xs={11}>
-        <Card className={classes.homeCard}>
-          <CardContent>
-            <Typography  variant="h5" component="h2">
-              {capitalize('Personal information')}
-            </Typography>
-            <List className={classes.root}>
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar>
-                    M
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={'Profile photo'} secondary={'Description.'}/>
-              </ListItem>
-              <Divider component="li" />
-
-              <ListItem button onClick={()=>{
-                setOpenedDialog('displayname');
-              }} >
-                <ListItemText primary={'Display Name'} secondary={props.user_meta.displayname}/>
-              </ListItem>
-              <Dialog open={OpenedDialog==='displayname'} onClose={()=>{setOpenedDialog(null);}} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Display name</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Your display name will be the primary name that be displayed on our services.
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    id="name"
-                    label="Display name"
-                    type="text"
-                    fullWidth
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Divider component="li" />
-
-              <ListItem button onClick={()=>{
-                setOpenedDialog('name');
-              }}>
-                <ListItemText primary={'Name'} secondary={props.user_meta.firstname+ ' '+ props.user_meta.lastname}/>
-              </ListItem>
-              <Dialog open={OpenedDialog==='name'} onClose={()=>{setOpenedDialog(null);}} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Display name</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Your display name will be the primary name that be displayed on our services.
-                  </DialogContentText>
-                  <TextField
-                    className={classes.textField}
-                    autoFocus
-                    defaultValue={props.user_meta.firstname}
-                    id="firstname"
-                    label="First name"
-                    type="text"
-                    margin="normal"
-                  />
-
-                  <TextField
-                    className={classes.textField}
-                    defaultValue={props.user_meta.lastname}
-                    id="lastname"
-                    label="Last name"
-                    margin="normal"
-                    type="text"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Divider component="li" />
-
-              <ListItem>
-                <ListItemText primary={'Gender'} secondary={props.user_meta.gender}/>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary={'Birthday'} secondary={props.user_meta.birthday}/>
-              </ListItem>
-            </List>
-          </CardContent>
-          <CardActions>
-
-          </CardActions>
-        </Card>
-      </Grid>
-
-      <Grid item xs={11}>
-        <Card className={classes.homeCard}>
-          <CardContent>
-            <Typography  variant="h5" component="h2">
-              {capitalize('Region')}
-            </Typography>
-            <List className={classes.root}>
-              <ListItem>
-                <ListItemText primary={'Language'} secondary={props.user_meta.language}/>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary={'Country'} secondary={props.user_meta.country}/>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary={'Address'} secondary={props.user_meta.address}/>
-              </ListItem>
-            </List>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+    </MuiPickersUtilsProvider>
   )
 };

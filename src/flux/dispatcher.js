@@ -19,6 +19,9 @@ function generateDispatcher(setState) {
     else if(payload.type === 'updateUserMeta') {
       setState( { UserMeta: payload.data } );
     }
+    else if(payload.type === 'updateDarktheme') {
+      setState( { DarkTheme: payload.data } );
+    }
   });
 
   return _dispatcher;

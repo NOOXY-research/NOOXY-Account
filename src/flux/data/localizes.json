@@ -19,7 +19,8 @@
     "email": "email address",
     "personal_settings": "personal",
     "contact_settings": "contact method",
-    "security_settings": "security and privacy"
+    "security_settings": "security and privacy",
+    "dark_theme": "dark theme"
   },
   "zh": {
     "account": "帳號",
