@@ -180,7 +180,7 @@ class App extends Component {
     const {classes} = this.props;
 
     const sideList = (
-      <div className={classes.drawerList}>
+      <List className={classes.drawerList}>
         <ListItem button>
           <ListItemText secondary={'NoService '+this.state.localizes[this.state.lang].account}/>
         </ListItem>
@@ -215,12 +215,6 @@ class App extends Component {
             <ListItemText primary={this.state.localizes[this.state.lang].security_settings} />
           </ListItem>
         </Link>
-        <ListItem button onClick={()=> {
-          this.actions.logout();
-        }}>
-          <ListItemIcon><ExitToAppIcon/></ListItemIcon>
-          <ListItemText primary={this.state.localizes[this.state.lang].logout} />
-        </ListItem>
         <Divider />
         <ListItem button onClick={()=> {
           this.actions.updateDarktheme(!this.state.DarkTheme);
@@ -229,14 +223,18 @@ class App extends Component {
           <ListItemText primary={this.state.localizes[this.state.lang].dark_theme} />
           <MuiSwitch color="primary" checked={this.state.DarkTheme} />
         </ListItem>
+        <ListItem button>
+          <ListItemIcon><CodeIcon/></ListItemIcon>
+          <ListItemText primary={this.state.localizes[this.state.lang].noshell} />
+        </ListItem>
+        <ListItem button onClick={()=> {
+          this.actions.logout();
+        }}>
+          <ListItemIcon><ExitToAppIcon/></ListItemIcon>
+          <ListItemText primary={this.state.localizes[this.state.lang].logout} />
+        </ListItem>
         <Divider />
-        <List>
-          <ListItem button>
-            <ListItemIcon><CodeIcon/></ListItemIcon>
-            <ListItemText primary={this.state.localizes[this.state.lang].noshell} />
-          </ListItem>
-        </List>
-      </div>
+      </List>
     )
 
     return (

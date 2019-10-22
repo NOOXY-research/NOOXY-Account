@@ -46,9 +46,6 @@ const setCookie = (cname, cvalue, exdays)=> {
 
 const useStyles = makeStyles(theme => ({
   '@global': {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -66,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
+  }
 }));
 
 export function SignInPage(props) {
