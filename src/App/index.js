@@ -303,7 +303,7 @@ class App extends Component {
                           }}/>
                           <Route exact path="/personal-settings/" render={(props)=>{
                             return(
-                              <PersonalPage user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
+                              <PersonalPage actions={this.actions} user_meta={this.state.UserMeta} localize={this.state.localizes[this.state.lang]}/>
                             );
                           }}/>
                           <Route exact path="/contact-settings/" render={(props)=>{

@@ -123,7 +123,9 @@ export default function Page(props) {
                     <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
                       Cancel
                     </Button>
-                    <Button onClick={()=>{setOpenedDialog(null);}} color="primary">
+                    <Button onClick={()=>{
+                      props.actions.Service.updateUserMeta({}, ()=> {setOpenedDialog(null);});
+                      }} color="primary">
                       Save
                     </Button>
                   </DialogActions>

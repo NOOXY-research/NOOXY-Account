@@ -65,12 +65,17 @@ function Service(NoService, Dispatcher) {
       Dispatcher.dispatch({type: 'updateDarktheme', data: data});
       setCookie('DarkTheme', data, 360);
     },
-    log: (data)=> {console.log(data)},
+    log: (title, data)=> {console.log('['+title+'] '+data)},
     logout: ()=> {
       NoService.logout();
     },
     Service: {
-
+      updateUserMeta: (json, callback)=> {
+        Services.NoUser.call('updateUser', json, (err, data)=> {
+          console.log(err, data);
+          callback(err);
+        });
+      }
     }
   };
 
